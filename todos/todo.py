@@ -1,10 +1,15 @@
-from fastapi import APIRouter, Path
-from model import Todo, Item
+from fastapi import APIRouter, Path, Response
+from model import Todo, Employee, Item
+from typing import Optional
+import json
 
 
 todo_router = APIRouter()
 # todo_list = ["Black", "Blue", "Purple"]
-todo_list = [{"id": 1, "name": "todo 1"}, {"id": 2, "name": "todo 2"}]
+todo_list = [
+    {"id": 1, "name": "todo 1"},
+    {"id": 2, "name": "todo 2"}
+]
 
 # @todo_router.post("/todo")
 # async def AddTodo(todo: dict) -> dict:
@@ -38,3 +43,27 @@ async def GetSingleID(todo_id: int = Path(..., title="The id of the todo to retr
     return {
         "message": "Todo with supplied ID doesn't exist."
     }
+
+
+@todo_router.post("/employee")
+async def AddEmployee(employee: Employee):
+    if (employee.Age > 18):
+        new_emp = Employee(EmpId=employee.EmpId,
+                           Name=employee.Name,
+                           Age=employee.Age,
+                           JobExperience=employee.JobExperience,
+                           Nationality=employee.Nationality,
+                           Color=employee.Color)
+        return new_emp
+    return {"Message": "Employee not up to age!"}
+
+
+@todo_router.post("/items/")
+async def MyItems(item_id: int, items: Item, QueryString: Optional[str] = None):
+    result = {"ItemID": item_id, **items.dict()}
+    if items.Price:
+        ans = "$"
+        result["Price"] = ans+items.Price
+    if QueryString:
+        result.update({"QueryString": QueryString})
+    return result

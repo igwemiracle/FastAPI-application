@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from fastapi import Body
+from typing import Optional
 
 
 class Todo(BaseModel):
@@ -6,6 +8,17 @@ class Todo(BaseModel):
     Name: str
 
 
+class Employee(BaseModel):
+    EmpId: int = 12
+    Name: str
+    JobExperience: int = Body(None, ge=3)
+    Age: int
+    Nationality: str
+    Color: Optional[str] = None
+
+
 class Item(BaseModel):
-    item: str
-    valid: str
+    Drinks: str
+    Fruits: str
+    Books: int = Body(None, le=5)
+    Price: str
