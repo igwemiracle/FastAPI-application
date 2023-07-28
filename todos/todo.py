@@ -1,17 +1,20 @@
-from fastapi import APIRouter, Path, Response
-from model import Todo, Employee, Item
+from fastapi import APIRouter, Path
+from model import Todo, Employee, Item, TodoItems
 from typing import Optional
-import json
 
 
 todo_router = APIRouter()
-# todo_list = ["Black", "Blue", "Purple"]
 todo_list = []
+'''
+ With the function just below we are able to filter out
+ the password element that is not decleared in the output
+ model(using pydantic).But by using this method, we are not
+ getting the support from  the editor and tools checking the function return type.
+ BUT in most cases where we want to do something like this,we want the model
+ just to filter/remove some of the data.
+ WE can use classes and inheritance to our advantage.
+'''
 
-# @todo_router.post("/todo")
-# async def AddTodo(todo: dict) -> dict:
-#     todo_list.append(todo)
-#     return {"Message": "Todo successfully added!"}
 # --------------------------------------------------------
 
 
@@ -19,15 +22,15 @@ todo_list = []
 async def AddTodo(todo: Todo) -> dict:
     todo_list.append(todo)
     return {
-        "Message": "Todo successfully added!"
+        "Message": "Todo successfully added!",
         # "todo": todo_list
     }
 
 
-@todo_router.get("/todo")
+@todo_router.get("/todo", response_model=TodoItems)
 async def RetrieveTodos() -> dict:
     return {
-        "Todos": todo_list
+        "todos": todo_list
     }
 
 

@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from todo import todo_router
+from othermoder import user_router
 from model import Todo
 
 app = FastAPI()
@@ -23,4 +24,6 @@ async def AddTodo(todo: Todo) -> dict:
 async def RetrieveTodos() -> dict:
     return {"todos": todo_list}
 
+
 app.include_router(todo_router)
+app.include_router(user_router)
