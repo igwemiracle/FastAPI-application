@@ -7,6 +7,14 @@ class Todo(BaseModel):
     id: int
     Name: str
 
+    class Config:
+        schema_extra = {
+            "Example": {
+                "id": 2,
+                "Name": "Jacob"
+            }
+        }
+
 
 class Employee(BaseModel):
     EmpId: int = 12
