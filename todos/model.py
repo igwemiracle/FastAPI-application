@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from fastapi import Body
-from typing import Optional, List
+from typing import Optional
 
 
 class Todo(BaseModel):
@@ -14,30 +14,6 @@ class Todo(BaseModel):
                 "Name": "Jacob"
             }
         }
-
-
-# class NewTodo(BaseModel):
-#     Name: str
-
-
-# class TodoItems(BaseModel):
-#     todos: List[NewTodo]
-
-#     class Config:
-#         schema_extra = {
-#             "example": {
-#                 "todos": [
-#                     {
-#                         "Name": "Will Biyers"
-#                     },
-#                     {
-#                         "Name": "Dustin"
-#                     }
-
-#                 ]
-
-#             }
-#         }
 
 
 class Employee(BaseModel):
