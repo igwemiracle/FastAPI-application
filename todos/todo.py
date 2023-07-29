@@ -1,21 +1,10 @@
 from fastapi import APIRouter, Path
-from model import Todo, Employee, Item, TodoItems
+from model import Todo, Employee, Item
 from typing import Optional
 
 
 todo_router = APIRouter()
 todo_list = []
-'''
- With the function just below we are able to filter out
- the password element that is not decleared in the output
- model(using pydantic).But by using this method, we are not
- getting the support from  the editor and tools checking the function return type.
- BUT in most cases where we want to do something like this,we want the model
- just to filter/remove some of the data.
- WE can use classes and inheritance to our advantage.
-'''
-
-# --------------------------------------------------------
 
 
 @todo_router.post("/todo")
@@ -27,11 +16,39 @@ async def AddTodo(todo: Todo) -> dict:
     }
 
 
-@todo_router.get("/todo", response_model=TodoItems)
+@todo_router.get("/todo")
 async def RetrieveTodos() -> dict:
     return {
         "todos": todo_list
     }
+
+
+@todo_router.put("/todo/{todo_id}")
+async def UpdateTodoItem(todo_data: Todo,
+                         todo_id: int = Path(..., title="Updata Todo ID")):
+    for todo in todo_list:
+        if todo.id == todo_id:
+            todo.Name = todo_data.Name
+            return {
+                "Message": "| Todo Updated Successfully |",
+
+            }
+
+    return {
+        "Message": "Todo with supplied id does not exist!"
+    }
+
+
+@todo_router.delete("/delete/{todo_id}")
+async def DeleteSingleTodo(todo_id: int) -> dict:
+    for index in range(len(todo_list)):
+        todo = todo_list[index]
+        if todo.id == todo_id:
+            todo_list.pop(index)
+            return {
+                "Message": "Todo deleted successfully"
+            }
+    return {"Message": "Todo with supplied ID does not exist"}
 
 
 @todo_router.get("/todo/{todo_id}")
@@ -68,31 +85,3 @@ async def MyItems(item_id: int, items: Item, QueryString: Optional[str] = None):
     if QueryString:
         result.update({"QueryString": QueryString})
     return result
-
-
-@todo_router.put("/todo/{todo_id}")
-async def UpdateTodoItem(todo_data: Todo,
-                         todo_id: int = Path(..., title="Updata Todo ID")):
-    for todo in todo_list:
-        if todo.id == todo_id:
-            todo.Name = todo_data.Name
-            return {
-                "Message": "| Todo Updated Successfully |",
-
-            }
-
-    return {
-        "Message": "Todo with supplied id does not exist!"
-    }
-
-
-@todo_router.delete("/delete/{todo_id}")
-async def DeleteSingleTodo(todo_id: int) -> dict:
-    for index in range(len(todo_list)):
-        todo = todo_list[index]
-        if todo.id == todo_id:
-            todo_list.pop(index)
-            return {
-                "Message": "Todo deleted successfully"
-            }
-    return {"Message": "Todo with supplied ID does not exist"}

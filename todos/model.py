@@ -16,28 +16,28 @@ class Todo(BaseModel):
         }
 
 
-class NewTodo(BaseModel):
-    Name: str
+# class NewTodo(BaseModel):
+#     Name: str
 
 
-class TodoItems(BaseModel):
-    todos: List[NewTodo]
+# class TodoItems(BaseModel):
+#     todos: List[NewTodo]
 
-    class Config:
-        schema_extra = {
-            "example": {
-                "todos": [
-                    {
-                        "Name": "Will Biyers"
-                    },
-                    {
-                        "Name": "Dustin"
-                    }
+#     class Config:
+#         schema_extra = {
+#             "example": {
+#                 "todos": [
+#                     {
+#                         "Name": "Will Biyers"
+#                     },
+#                     {
+#                         "Name": "Dustin"
+#                     }
 
-                ]
+#                 ]
 
-            }
-        }
+#             }
+#         }
 
 
 class Employee(BaseModel):
