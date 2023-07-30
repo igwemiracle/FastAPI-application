@@ -23,13 +23,13 @@ fake_user_db = {}
 
 
 @user_router.post("/user/", response_model=UserOut)
-async def CreatUser(user: UserIn):
+async def creatUser(user: UserIn):
     fake_user_db[user.username] = user
     return user
 
 
 @user_router.get("/user/{username}", response_model=UserOut)
-async def RetrieveUser(UserName: str):
+async def retrieveUser(UserName: str):
     if UserName in fake_user_db:
         return fake_user_db[UserName]
     raise HTTPException(status_code=404, detail="User not found")
